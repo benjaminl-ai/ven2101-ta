@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEN2101 Product Review Master</title>
+    <style>
+        :root {
+            --primary: #ff0000; /* YouTube Red */
+            --secondary: #282828;
+            --success: #00b894;
+            --danger: #d63031;
+            --light: #f9f9f9;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--light); margin: 0; padding: 15px; padding-bottom: 50px; }
+        .header { background: var(--primary); color: white; padding: 20px; text-align: center; border-radius: 0 0 20px 20px; margin: -15px -15px 20px -15px; }
+        .section-title { color: var(--secondary); border-left: 5px solid var(--primary); padding-left: 10px; margin: 25px 0 15px 0; font-size: 1.2rem; }
+        
+        .card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .phrase-text { font-size: 1.1rem; font-weight: 600; color: #333; margin-bottom: 10px; line-height: 1.4; }
+        
+        .controls { display: flex; gap: 10px; margin-top: 15px; }
+        .btn { flex: 1; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-listen { background: #f0f0f0; color: #333; }
+        .btn-record { background: var(--secondary); color: white; }
+        .btn-record.recording { background: var(--primary); animation: pulse 1.5s infinite; }
+
+        .feedback-box { margin-top: 15px; padding: 12px; border-radius: 10px; display: none; font-size: 0.9rem; border: 1px dashed #ccc; }
+        .suggestion { color: #6c5ce7; font-weight: bold; margin-top: 5px; display: block; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .nav-tabs { display: flex; overflow-x: auto; gap: 10px; margin-bottom: 20px; white-space: nowrap; padding-bottom: 5px; }
+        .tab { padding: 8px 15px; background: white; border-radius: 20px; font-size: 0.9rem; border: 1px solid #ddd; }
+        .tab.active { background: var(--primary); color: white; border: none; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>VEN2101 Review Master</h1>
+    <p>Influencer Speaking Assessment Prep</p>
+</div>
+
+<div class="nav-tabs">
+    <div class="tab" onclick="scrollToSection('s1')">1. Greeting</div>
+    <div class="tab" onclick="scrollToSection('s2')">2. Features</div>
+    <div class="tab" onclick="scrollToSection('s3')">3. How-to</div>
+    <div class="tab" onclick="scrollToSection('s4')">4. Review</div>
+    <div class="tab" onclick="scrollToSection('s5')">5. CTA</div>
+    <div class="tab" onclick="scrollToSection('s6')">6. Closing</div>
+</div>
+
+<div id="practice-area"></div>
+
+<script>
+    const scriptData = [
+        { id: 's1', cat: "1. Greeting & Intro", phrases: ["Welcome back to my channel.", "Hey guys, what's going on?", "Let's dive right into today's video!", "Today, I'm going to review the new product.", "I'm pleased to explore and review the new device."] },
+        { id: 's2', cat: "2. Product Features", phrases: ["This watch has a timer function.", "There are two built-in cameras.", "You can use the digital pen to take notes.", "It can convert audio files into different formats."] },
+        { id: 's3', cat: "3. How to use", phrases: ["Simply press 'up' or 'down' on the remote control.", "Just press 'set' for three seconds.", "Turn the red knob to select the cleaning mode."] },
+        { id: 's4', cat: "4. Give a Review", phrases: ["I think this product is amazing.", "If you wonder my opinion, I would say it's worth it.", "To me, the battery life is the best feature."] },
+        { id: 's5', cat: "5. Call to Action", phrases: ["Enter my promo code to get a discount.", "Click the link below and enter my promo code."] },
+        { id: 's6', cat: "6. Closing", phrases: ["Thanks for watching guys. Give it a like and subscribe!", "Take care, have a great week, and I'll see you very soon."] }
+    ];
+
+    const container = document.getElementById('practice-area');
+
+    scriptData.forEach(section => {
+        const h2 = document.createElement('div');
+        h2.className = 'section-title';
+        h2.id = section.id;
+        h2.innerText = section.cat;
+        container.appendChild(h2);
+
+        section.phrases.forEach((txt, i) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="phrase-text" id="t-${section.id}-${i}">${txt}</div>
+                <div class="controls">
+                    <button class="btn btn-listen" onclick="speak('${txt.replace(/'/g, "\\'")}')">🔊 Listen</button>
+                    <button class="btn btn-record" onclick="startRecord('${txt.replace(/'/g, "\\'")}', 'f-${section.id}-${i}', this)">🎤 Practice</button>
+                </div>
+                <div class="feedback-box" id="f-${section.id}-${i}"></div>
+            `;
+            container.appendChild(card);
+        });
+    });
+
+    function speak(t) {
+        const m = new SpeechSynthesisUtterance(t);
+        m.lang = 'en-US';
+        m.rate = 0.9;
+        window.speechSynthesis.speak(m);
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+
+    let activeFeedback = null;
+    let activeBtn = null;
+    let targetText = "";
+
+    function startRecord(txt, feedbackId, btn) {
+        targetText = txt.toLowerCase().replace(/[.,!?'" ]/g, "");
+        activeFeedback = document.getElementById(feedbackId);
+        activeBtn = btn;
+        
+        btn.innerText = "Listening...";
+        btn.classList.add('recording');
+        recognition.start();
+    }
+
+    recognition.onresult = (e) => {
+        const resultText = e.results[0][0].transcript;
+        const resultClean = resultText.toLowerCase().replace(/[.,!?'" ]/g, "");
+        activeBtn.innerText = "🎤 Practice";
+        activeBtn.classList.remove('recording');
+        activeFeedback.style.display = "block";
+
+        if (resultClean.includes(targetText) || targetText.includes(resultClean)) {
+            activeFeedback.innerHTML = `<span style="color:var(--success)">✅ Perfect!</span><br>You said: "${resultText}"`;
+        } else {
+            let advice = analyzeError(targetText, resultClean);
+            activeFeedback.innerHTML = `
+                <span style="color:var(--danger)">❌ Try again</span><br>
+                <small>You said: "${resultText}"</small>
+                <span class="suggestion">${advice}</span>
+            `;
+        }
+    };
+
+    function analyzeError(target, result) {
+        if (target.includes("th") && !result.includes("th")) return "💡 留意 'th' 嘅發音（條脷放喺牙齒中間）。";
+        if (target.endsWith("s") && !result.endsWith("s")) return "💡 記得讀埋個 's' 尾音（例如: guys, features）。";
+        if (target.includes("v") && !result.includes("v")) return "💡 留意 'v' 音，上齒要咬下唇（例如: review, dive）。";
+        return "💡 試下聽多幾次 🔊，留意語速同連音 (Linking)！";
+    }
+
+    function scrollToSection(id) {
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
