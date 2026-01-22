@@ -3,50 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEN2101 Influencer Master Pro</title>
+    <title>VEN2101 Influencer Master Ultimate</title>
     <style>
         :root {
             --primary: #6c5ce7; --secondary: #a29bfe; --bg: #f4f7f6;
             --success: #00b894; --danger: #d63031; --dark: #2d3436;
         }
-        body { font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif; background: var(--bg); margin: 0; color: var(--dark); }
+        body { font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif; background: var(--bg); margin: 0; color: var(--dark); padding-bottom: 50px; }
         
-        /* 頁面切換 / Page Toggles */
         .page { display: none; padding: 20px; animation: fadeIn 0.4s; }
         .page.active { display: block; }
 
-        /* 首頁 / Welcome Screen */
-        .welcome-screen { text-align: center; padding: 50px 20px; }
+        /* 首頁 */
+        .welcome-screen { text-align: center; padding: 40px 20px; }
         .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-        .prod-card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; border: 2px solid transparent; }
+        .prod-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; border: 2px solid transparent; }
         .prod-card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        .prod-card i { font-size: 3rem; display: block; margin-bottom: 10px; }
+        .prod-card i { font-size: 2.5rem; display: block; margin-bottom: 10px; }
 
-        /* 練習區 / Practice Area */
-        .practice-header { background: white; padding: 15px 20px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; sticky: top; }
-        .current-product-tag { background: var(--primary); color: white; padding: 5px 15px; border-radius: 15px; font-weight: bold; font-size: 0.9rem; }
+        /* 練習區 */
+        .practice-header { background: white; padding: 15px 20px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .current-product-tag { background: var(--primary); color: white; padding: 5px 12px; border-radius: 12px; font-weight: bold; font-size: 0.85rem; }
         
-        .card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 20px; border-left: 5px solid var(--secondary); }
         .eng { font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; line-height: 1.4; color: #000; }
-        .chi { font-size: 0.9rem; color: #636e72; margin-bottom: 15px; }
+        .chi { font-size: 0.85rem; color: #636e72; margin-bottom: 15px; }
 
         .btn-group { display: flex; gap: 10px; }
-        .btn { flex: 1; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn-listen { background: #f1f2f6; color: var(--primary); }
+        .btn { flex: 1; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; }
+        .btn-listen { background: #eef2ff; color: var(--primary); }
         .btn-mic { background: var(--primary); color: white; }
         .btn-mic.recording { background: var(--danger); animation: pulse 1s infinite; }
 
-        /* 導航 / Navigation */
-        .nav-footer { display: flex; justify-content: space-between; margin-top: 20px; padding-bottom: 40px; }
-        .btn-nav { background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; }
+        /* 導航 */
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 20px; }
+        .btn-nav { background: var(--dark); color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; }
         .btn-nav:disabled { opacity: 0.3; }
 
-        /* 彈窗 / Popup */
         #popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 30px; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.2); z-index: 100; width: 80%; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(0.98); } 100% { transform: scale(1); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(0.97); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -54,20 +52,19 @@
 <div id="page-welcome" class="page active">
     <div class="welcome-screen">
         <h1 style="color:var(--primary);">🎬 Influencer Master</h1>
-        <p>Pick a product to start your speaking practice!<br>選擇一個產品開始練習你的演說！</p>
-        
+        <p>Pick a product to start / 選擇產品開始練習</p>
         <div class="product-grid">
-            <div class="prod-card" onclick="startApp('Ionic Hairdryer', '🌬️')">
-                <i>🌬️</i><strong>Ionic Hairdryer</strong>
+            <div class="prod-card" onclick="startApp('Ionic Hairdryer (負離子風筒)', '🌬️')">
+                <i>🌬️</i><strong>Ionic Hairdryer</strong><br><small>(負離子風筒)</small>
             </div>
-            <div class="prod-card" onclick="startApp('4K Action Camera', '📸')">
-                <i>📸</i><strong>4K Action Camera</strong>
+            <div class="prod-card" onclick="startApp('4K Action Camera (4K運動相機)', '📸')">
+                <i>📸</i><strong>4K Action Camera</strong><br><small>(4K運動相機)</small>
             </div>
-            <div class="prod-card" onclick="startApp('Smart Watch', '⌚')">
-                <i>⌚</i><strong>Smart Watch</strong>
+            <div class="prod-card" onclick="startApp('Smart Watch (智能手錶)', '⌚')">
+                <i>⌚</i><strong>Smart Watch</strong><br><small>(智能手錶)</small>
             </div>
-            <div class="prod-card" onclick="startApp('Cleaning Robot', '🤖')">
-                <i>🤖</i><strong>Cleaning Robot</strong>
+            <div class="prod-card" onclick="startApp('Cleaning Robot (拖地機械人)', '🤖')">
+                <i>🤖</i><strong>Cleaning Robot</strong><br><small>(拖地機械人)</small>
             </div>
         </div>
     </div>
@@ -75,14 +72,11 @@
 
 <div id="page-practice" class="page">
     <div class="practice-header">
-        <span style="cursor:pointer; font-weight:bold; color:var(--primary);" onclick="goHome()">← Home</span>
-        <div class="current-product-tag" id="header-prod">PRODUCT: ---</div>
+        <span style="cursor:pointer; font-weight:bold; color:var(--primary);" onclick="goHome()">← Home / 主頁</span>
+        <div class="current-product-tag" id="header-prod">---</div>
     </div>
-
-    <div id="section-info" style="font-weight:bold; color:var(--primary); margin-bottom:10px; font-size:0.8rem;">STEP 1: GREETING</div>
-    
+    <div id="section-info" style="font-weight:bold; color:var(--primary); margin-bottom:15px; font-size:0.9rem;">STEP 1: GREETING</div>
     <div id="card-container"></div>
-
     <div class="nav-footer">
         <button class="btn-nav" id="btn-prev" onclick="moveSection(-1)">Previous / 上一頁</button>
         <button class="btn-nav" id="btn-next" onclick="moveSection(1)" style="background:var(--primary)">Next / 下一頁</button>
@@ -94,124 +88,140 @@
     <div id="pop-icon" style="font-size:3rem;"></div>
     <h3 id="pop-title" style="margin:10px 0;"></h3>
     <p id="pop-text" style="color:#666;"></p>
-    <button class="btn btn-mic" onclick="closePop()" style="margin-top:15px">Keep Going / 繼續</button>
+    <button class="btn btn-mic" onclick="closePop()">Continue / 繼續</button>
 </div>
 
 <script>
     let currentProd = "";
-    let prodEmoji = "";
     let sectionIdx = 0;
 
-    const sections = [
-        {
-            name: "Greeting & Intro / 歡迎與開場",
-            phrases: [
-                { eng: "Welcome back to my channel.", chi: "歡迎回到我的頻道。" },
-                { eng: "Let's dive right into today's video!", chi: "讓我們直接進入今天的影片吧！" },
-                { eng: "Today, I'm going to review the new [PROD].", chi: "今天我要評測這款全新的 [PROD]。" }
-            ]
+    const prodData = {
+        "Ionic Hairdryer (負離子風筒)": {
+            features: [
+                { eng: "This hairdryer can keep your hair straight and soft.", chi: "這款風筒可以讓你的頭髮保持直順且柔軟。" },
+                { eng: "It features a powerful ionic technology to reduce frizz.", chi: "它採用強大的負離子技術來減少頭髮毛躁。" },
+                { eng: "It is lightweight and perfect for professional hair styling.", chi: "它非常輕巧，非常適合專業的美髮造型。" }
+            ],
+            howTo: [
+                { eng: "Simply touch 'set' on the touch screen to select your speed.", chi: "只需輕觸屏幕上的 'set' 鍵即可選擇風速。" },
+                { eng: "Turn the nozzle to adjust the direction of the airflow.", chi: "轉動風嘴即可調整氣流的方向。" },
+                { eng: "Press the cool shot button to lock your hairstyle in place.", chi: "按下冷風按鈕即可固定你的髮型。" }
+            ],
+            final: "Welcome back to my channel. Today, I'm going to review the new Ionic Hairdryer. This hairdryer can keep your hair straight and soft by using ionic technology. Simply touch 'set' on the touch screen to select your speed. I think this product is worth every penny. Enter my promo code to get a discount. Thanks for watching!"
         },
-        {
-            name: "Product Features / 產品特點",
-            phrases: [
-                { 
-                    "Ionic Hairdryer": { eng: "This hairdryer can keep your hair straight and soft.", chi: "這款風筒可以讓你的頭髮保持直順且柔軟。" },
-                    "4K Action Camera": { eng: "This camera has two built-in cameras and supports 4K recording.", chi: "這款相機內置兩個鏡頭並支持 4K 錄影。" },
-                    "Smart Watch": { eng: "This watch features a high-speed heart rate sensor and a timer.", chi: "這款手錶具備高速心率感測器和計時功能。" },
-                    "Cleaning Robot": { eng: "This floor cleaning robot is both a vacuum and a mop.", chi: "這款拖地機械人同時具備吸塵和拖地功能。" }
-                },
-                { eng: "It is extremely powerful and lightweight.", chi: "它功能強大且非常輕巧。" }
-            ]
+        "4K Action Camera (4K運動相機)": {
+            features: [
+                { eng: "There are two built-in cameras for multi-angle recording.", chi: "內置兩個攝像頭，支援多角度錄影。" },
+                { eng: "It supports 4K high-definition video at 60 frames per second.", chi: "它支援每秒 60 幀的 4K 高畫質錄影。" },
+                { eng: "The waterproof housing allows you to record underwater.", chi: "防水外殼讓你可以在水下進行錄製。" }
+            ],
+            howTo: [
+                { eng: "Simply press 'up' or 'down' on the remote control to select your mode.", chi: "只需按下遙控器上的「上」或「下」鍵即可選擇模式。" },
+                { eng: "Hold the power button for three seconds to start recording.", chi: "長按電源鍵三秒鐘即可開始錄製。" },
+                { eng: "Use the built-in Wi-Fi to transfer files to your smartphone.", chi: "使用內建的 Wi-Fi 將檔案傳送到你的手機。" }
+            ],
+            final: "Welcome back to my channel. Today, I'm going to review the new 4K Action Camera. It has two built-in cameras and is perfect for underwater recording. Simply press 'up' or 'down' on the remote control to select your mode. I think this product is amazing. Enter my promo code to get a discount. Thanks for watching!"
         },
-        {
-            name: "How to Use / 如何使用",
-            phrases: [
-                { 
-                    "Ionic Hairdryer": { eng: "Simply touch 'set' on the touch screen to select your speed.", chi: "只需輕觸屏幕上的 'set' 鍵即可選擇風速。" },
-                    "4K Action Camera": { eng: "Simply press 'up' or 'down' on the remote to select your mode.", chi: "只需按下遙控器上的上下鍵即可選擇模式。" },
-                    "Smart Watch": { eng: "Simply swipe left on the screen to check your daily steps.", chi: "只需在屏幕向左滑動即可檢查日常步數。" },
-                    "Cleaning Robot": { eng: "Just turn the red knob to select the cleaning mode you need.", chi: "只需轉動紅色旋鈕即可選擇所需的清潔模式。" }
-                }
-            ]
+        "Smart Watch (智能手錶)": {
+            features: [
+                { eng: "This watch has a timer function and a heart rate monitor.", chi: "這款手錶具備計時功能和心率監測器。" },
+                { eng: "You can use the digital pen to take notes and draw pictures.", chi: "你可以使用數碼筆來做筆記和畫圖。" },
+                { eng: "The high-speed search engine helps you find information quickly.", chi: "高速搜尋引擎能幫助你快速找到資訊。" }
+            ],
+            howTo: [
+                { eng: "Simply swipe left on the touch screen to check your daily steps.", chi: "只需在觸控屏幕向左滑動即可檢查日常步數。" },
+                { eng: "Touch 'set' on the screen to customize your watch face.", chi: "點擊屏幕上的 'set' 即可自定義你的錶面。" },
+                { eng: "Connect the watch to your phone via Bluetooth to receive alerts.", chi: "通過藍牙將手錶連接到手機以接收通知。" }
+            ],
+            final: "Welcome back to my channel. Today, I'm going to review the new Smart Watch. You can use the digital pen to take notes, and it has a high-speed search engine. Simply swipe left on the screen to check your daily steps. I think this product is worth every penny. Enter my promo code to get a discount. Thanks for watching!"
         },
-        {
-            name: "Review & Call to Action / 評測與行動呼籲",
-            phrases: [
-                { eng: "I think this product is worth every penny.", chi: "我覺得這款產品物有所值。" },
-                { eng: "Enter my promo code to get a 20% discount.", chi: "輸入我的優惠碼即可獲得八折優惠。" },
-                { eng: "Click the link in the description below!", chi: "點擊下方資訊欄的連結吧！" }
-            ]
-        },
-        {
-            name: "Final Challenge: Full Script / 終極挑戰：完整講稿",
-            isFinal: true
+        "Cleaning Robot (拖地機械人)": {
+            features: [
+                { eng: "This floor cleaning robot is both a vacuum and a mop.", chi: "這款拖地機械人同時具備吸塵和拖地功能。" },
+                { eng: "It has two washing modes, including normal and intensive.", chi: "它有兩種清潔模式，包括普通和加強模式。" },
+                { eng: "The smart sensors allow it to avoid obstacles and stairs.", chi: "智能感應器使其能夠避開障礙物和樓梯。" }
+            ],
+            howTo: [
+                { eng: "Just turn the red knob on the side to select the cleaning mode.", chi: "只需轉動側面的紅色旋鈕即可選擇清潔模式。" },
+                { eng: "Press the 'home' button to make it return to the charging station.", chi: "按下「主頁」鍵即可讓它返回充電站。" },
+                { eng: "Simply press 'set' for three seconds to schedule a cleaning time.", chi: "只需按住 'set' 三秒鐘即可預約清潔時間。" }
+            ],
+            final: "Welcome back to my channel. Today, I'm going to review the new Cleaning Robot. This robot is both a vacuum and a mop with two washing modes. Just turn the red knob to select the cleaning mode you need. I think this product is very powerful. Enter my promo code to get a discount. Thanks for watching!"
         }
+    };
+
+    const sections = [
+        { name: "Greeting & Intro / 歡迎與開場", type: "intro" },
+        { name: "Product Features / 產品特點", type: "features" },
+        { name: "How to Use / 如何操作", type: "howTo" },
+        { name: "Review & Call to Action / 評語與行動", type: "cta" },
+        { name: "Final Challenge / 終極挑戰", type: "final" }
     ];
 
     function startApp(prod, emoji) {
         currentProd = prod;
-        prodEmoji = emoji;
         sectionIdx = 0;
-        document.getElementById('header-prod').innerText = `${prodEmoji} ${prod}`;
+        document.getElementById('header-prod').innerText = `${emoji} ${prod}`;
         document.getElementById('page-welcome').classList.remove('active');
         document.getElementById('page-practice').classList.add('active');
         render();
     }
 
     function render() {
-        const section = sections[sectionIdx];
-        document.getElementById('section-info').innerText = `STEP ${sectionIdx + 1}/5: ${section.name}`;
+        const sec = sections[sectionIdx];
+        document.getElementById('section-info').innerText = `STEP ${sectionIdx + 1}/5: ${sec.name}`;
         const container = document.getElementById('card-container');
         container.innerHTML = "";
 
-        if (section.isFinal) {
-            renderFinalChallenge();
-            return;
-        }
-
-        section.phrases.forEach(p => {
-            let data = p[currentProd] ? p[currentProd] : p;
-            let text = data.eng.replace("[PROD]", currentProd);
-            
-            const card = document.createElement('div');
-            card.className = "card";
-            card.innerHTML = `
-                <div class="eng">${text}</div>
-                <div class="chi">${data.chi}</div>
+        if (sec.type === "intro") {
+            const list = [
+                { eng: "Welcome back to my channel.", chi: "歡迎回到我的頻道。" },
+                { eng: "Let's dive right into today's video!", chi: "讓我們直接進入今天的影片吧！" },
+                { eng: `Today, I'm going to review the new ${currentProd}.`, chi: `今天我要評測這款全新的 ${currentProd}。` }
+            ];
+            list.forEach(item => createCard(item, container));
+        } else if (sec.type === "features") {
+            prodData[currentProd].features.forEach(item => createCard(item, container));
+        } else if (sec.type === "howTo") {
+            prodData[currentProd].howTo.forEach(item => createCard(item, container));
+        } else if (sec.type === "cta") {
+            const list = [
+                { eng: "I think this product is worth every penny.", chi: "我覺得這款產品物有所值。" },
+                { eng: "Enter my promo code to get a 20% discount.", chi: "輸入我的優惠碼即可獲得八折優惠。" },
+                { eng: "Click the link in the description below!", chi: "點擊下方資訊欄的連結吧！" }
+            ];
+            list.forEach(item => createCard(item, container));
+        } else if (sec.type === "final") {
+            const script = prodData[currentProd].final;
+            container.innerHTML = `<div class="card" style="border: 2px solid var(--primary);">
+                <div style="color:var(--primary); font-weight:bold; margin-bottom:10px;">🏆 Full Script Challenge:</div>
+                <div class="eng" style="font-size:1.2rem; background:#f9f9f9; padding:15px; border-radius:10px;">${script}</div>
+                <div class="chi" style="margin-top:10px;">嘗試讀出這段專門為 ${currentProd} 設計的完整講稿！</div>
                 <div class="btn-group">
-                    <button class="btn btn-listen" onclick="speak('${text.replace(/'/g, "\\'")}')">🔊 Listen / 聽</button>
-                    <button class="btn btn-mic" onclick="handleRecord('${text.replace(/'/g, "\\'")}', this)">🎤 Record / 讀</button>
+                    <button class="btn btn-listen" onclick="speak('${script.replace(/'/g, "\\'")}')">🔊 Listen Full</button>
+                    <button class="btn btn-mic" onclick="handleRecord('${script.replace(/'/g, "\\'")}', this)">🎤 Record Full</button>
                 </div>
-            `;
-            container.appendChild(card);
-        });
-
+            </div>`;
+        }
         document.getElementById('btn-prev').disabled = sectionIdx === 0;
-        document.getElementById('btn-next').innerText = "Next / 下一頁";
+        document.getElementById('btn-next').innerText = sectionIdx === 4 ? "Finish / 完成" : "Next / 下一頁";
     }
 
-    function renderFinalChallenge() {
-        const container = document.getElementById('card-container');
-        const fullScript = `Welcome back to my channel. Today, I'm going to review the new ${currentProd}. It is very powerful and lightweight. Simply follow the instructions to use it. I think this product is worth every penny. Enter my promo code to get a discount. Thanks for watching!`;
-        
-        container.innerHTML = `
-            <div class="card" style="border: 2px solid var(--primary);">
-                <div style="color:var(--primary); font-weight:bold; margin-bottom:10px;">🌟 FINAL CHALLENGE: Read the whole script!</div>
-                <div class="eng" style="font-size:1.2rem; background:#f9f9f9; padding:15px; border-radius:10px;">${fullScript}</div>
-                <div class="chi" style="margin-top:10px;">試著一口氣讀出整段講稿，展現你的 Influencer 實力！</div>
-                <div class="btn-group">
-                    <button class="btn btn-listen" onclick="speak('${fullScript.replace(/'/g, "\\'")}')">🔊 Listen Full</button>
-                    <button class="btn btn-mic" onclick="handleRecord('${fullScript.replace(/'/g, "\\'")}', this)">🎤 Record Full Script</button>
-                </div>
-            </div>
-        `;
-        document.getElementById('btn-next').innerText = "Finish / 完成";
+    function createCard(item, container) {
+        const div = document.createElement('div');
+        div.className = "card";
+        div.innerHTML = `<div class="eng">${item.eng}</div><div class="chi">${item.chi}</div>
+            <div class="btn-group">
+                <button class="btn btn-listen" onclick="speak('${item.eng.replace(/'/g, "\\'")}')">🔊 Listen</button>
+                <button class="btn btn-mic" onclick="handleRecord('${item.eng.replace(/'/g, "\\'")}', this)">🎤 Record</button>
+            </div>`;
+        container.appendChild(div);
     }
 
     function moveSection(step) {
         sectionIdx += step;
-        if (sectionIdx >= sections.length) {
-            showPop("Congratulations! 🏆", "🎉", "You have mastered the " + currentProd + " product review!");
+        if (sectionIdx >= 5) {
+            showPop("Excellent! 🏆", "🎉", "You are now a pro Influencer for " + currentProd);
             goHome();
         } else {
             render();
@@ -233,17 +243,11 @@
         btn.innerText = "Listening... 👂";
         btn.classList.add('recording');
         recognition.start();
-
         recognition.onresult = (e) => {
             const result = e.results[0][0].transcript.toLowerCase();
-            btn.innerText = "🎤 Record / 讀";
+            btn.innerText = "🎤 Record";
             btn.classList.remove('recording');
-
-            if (result.length > 5) {
-                showPop("Good Job! 👍", "⭐", `You said: "${result}"`);
-            } else {
-                showPop("Try Again!", "💪", "Try to speak louder and clearer.");
-            }
+            showPop("Good Job!", "⭐", `You said: "${result}"`);
         };
     }
 
