@@ -3,67 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEN2101 Influencer Master</title>
+    <title>VEN2101 Influencer Master Pro</title>
     <style>
         :root {
-            --primary: #6c5ce7; --secondary: #a29bfe; --accent: #fdcb6e;
-            --success: #00b894; --danger: #d63031; --bg: #f8f9fc;
+            --primary: #6c5ce7; --secondary: #a29bfe; --bg: #f4f7f6;
+            --success: #00b894; --danger: #d63031; --dark: #2d3436;
         }
-        body { font-family: 'Poppins', 'Segoe UI', sans-serif; background: var(--bg); margin: 0; color: #2d3436; }
+        body { font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif; background: var(--bg); margin: 0; color: var(--dark); }
         
-        /* 頁面切換 */
+        /* 頁面切換 / Page Toggles */
         .page { display: none; padding: 20px; animation: fadeIn 0.4s; }
         .page.active { display: block; }
 
-        /* 首頁設計 */
-        .welcome-screen { text-align: center; padding: 40px 20px; }
-        .logo { font-size: 3rem; margin-bottom: 10px; }
+        /* 首頁 / Welcome Screen */
+        .welcome-screen { text-align: center; padding: 50px 20px; }
         .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-        .prod-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
-        .prod-card:active { transform: scale(0.95); border-color: var(--primary); }
-        .prod-card i { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+        .prod-card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; border: 2px solid transparent; }
+        .prod-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .prod-card i { font-size: 3rem; display: block; margin-bottom: 10px; }
 
-        /* 練習區設計 */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .progress-text { font-size: 0.8rem; font-weight: bold; color: var(--primary); }
+        /* 練習區 / Practice Area */
+        .practice-header { background: white; padding: 15px 20px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; sticky: top; }
+        .current-product-tag { background: var(--primary); color: white; padding: 5px 15px; border-radius: 15px; font-weight: bold; font-size: 0.9rem; }
         
-        .card { background: white; border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .eng { font-size: 1.2rem; font-weight: bold; color: #2d3436; margin-bottom: 8px; line-height: 1.4; }
-        .chi { font-size: 0.9rem; color: #b2bec3; margin-bottom: 20px; }
+        .card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .eng { font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; line-height: 1.4; color: #000; }
+        .chi { font-size: 0.9rem; color: #636e72; margin-bottom: 15px; }
 
         .btn-group { display: flex; gap: 10px; }
-        .btn { flex: 1; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; }
+        .btn { flex: 1; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn-listen { background: #f1f2f6; color: var(--primary); }
         .btn-mic { background: var(--primary); color: white; }
         .btn-mic.recording { background: var(--danger); animation: pulse 1s infinite; }
 
-        /* 底部導航 */
-        .footer { display: flex; justify-content: space-between; margin-top: 20px; }
-        .btn-nav { background: #2d3436; color: white; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; }
+        /* 導航 / Navigation */
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 20px; padding-bottom: 40px; }
+        .btn-nav { background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; }
         .btn-nav:disabled { opacity: 0.3; }
 
-        /* 彈窗 */
-        #popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 30px; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.2); z-index: 100; width: 75%; }
+        /* 彈窗 / Popup */
+        #popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 30px; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.2); z-index: 100; width: 80%; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(0.98); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
 <div id="page-welcome" class="page active">
     <div class="welcome-screen">
-        <div class="logo">🎤</div>
-        <h1 style="color:var(--primary); margin:0;">Influencer Master</h1>
-        <p>Choose a product to start your review practice</p>
+        <h1 style="color:var(--primary);">🎬 Influencer Master</h1>
+        <p>Pick a product to start your speaking practice!<br>選擇一個產品開始練習你的演說！</p>
         
         <div class="product-grid">
             <div class="prod-card" onclick="startApp('Ionic Hairdryer', '🌬️')">
                 <i>🌬️</i><strong>Ionic Hairdryer</strong>
             </div>
-            <div class="prod-card" onclick="startApp('4K Camera', '📸')">
-                <i>📸</i><strong>4K Camera</strong>
+            <div class="prod-card" onclick="startApp('4K Action Camera', '📸')">
+                <i>📸</i><strong>4K Action Camera</strong>
             </div>
             <div class="prod-card" onclick="startApp('Smart Watch', '⌚')">
                 <i>⌚</i><strong>Smart Watch</strong>
@@ -76,17 +74,18 @@
 </div>
 
 <div id="page-practice" class="page">
-    <div class="header">
-        <button onclick="goHome()" style="border:none; background:none; color:var(--primary); font-weight:bold;">← Exit</button>
-        <div class="progress-text" id="stage-info">STEP 1/6: GREETING</div>
+    <div class="practice-header">
+        <span style="cursor:pointer; font-weight:bold; color:var(--primary);" onclick="goHome()">← Home</span>
+        <div class="current-product-tag" id="header-prod">PRODUCT: ---</div>
     </div>
 
-    <div id="card-container">
-        </div>
+    <div id="section-info" style="font-weight:bold; color:var(--primary); margin-bottom:10px; font-size:0.8rem;">STEP 1: GREETING</div>
+    
+    <div id="card-container"></div>
 
-    <div class="footer">
-        <button class="btn-nav" id="btn-prev" onclick="moveSection(-1)">Previous Part</button>
-        <button class="btn-nav" id="btn-next" onclick="moveSection(1)" style="background:var(--primary)">Next Part</button>
+    <div class="nav-footer">
+        <button class="btn-nav" id="btn-prev" onclick="moveSection(-1)">Previous / 上一頁</button>
+        <button class="btn-nav" id="btn-next" onclick="moveSection(1)" style="background:var(--primary)">Next / 下一頁</button>
     </div>
 </div>
 
@@ -94,130 +93,135 @@
 <div id="popup">
     <div id="pop-icon" style="font-size:3rem;"></div>
     <h3 id="pop-title" style="margin:10px 0;"></h3>
-    <p id="pop-text" style="color:#666; font-size:0.9rem;"></p>
-    <button class="btn btn-mic" onclick="closePop()" style="margin-top:15px">Continue</button>
+    <p id="pop-text" style="color:#666;"></p>
+    <button class="btn btn-mic" onclick="closePop()" style="margin-top:15px">Keep Going / 繼續</button>
 </div>
 
 <script>
     let currentProd = "";
     let prodEmoji = "";
-    let currentSectionIdx = 0;
+    let sectionIdx = 0;
 
-    const rawData = [
+    const sections = [
         {
-            title: "GREETING & INTRO",
+            name: "Greeting & Intro / 歡迎與開場",
             phrases: [
                 { eng: "Welcome back to my channel.", chi: "歡迎回到我的頻道。" },
-                { eng: "Hey guys, what's going on?", chi: "嘿大家，最近好嗎？" },
                 { eng: "Let's dive right into today's video!", chi: "讓我們直接進入今天的影片吧！" },
-                { eng: "Today, I'm going to review the new [PROD].", chi: "今天我要評測這款全新的 [PROD]。" },
-                { eng: "I'm pleased to explore and review the new [PROD].", chi: "我很榮幸能為大家探索和評測這款 [PROD]。" }
+                { eng: "Today, I'm going to review the new [PROD].", chi: "今天我要評測這款全新的 [PROD]。" }
             ]
         },
         {
-            title: "PRODUCT FEATURES",
+            name: "Product Features / 產品特點",
             phrases: [
-                { hair: "This hairdryer can keep your hair straight and soft.", cam: "There are two built-in cameras.", watch: "This watch has a timer function.", robot: "This floor cleaning robot is both a vacuum and a mop.", chi: "這項產品的功能非常實用。" },
-                { hair: "It features a high-speed motor.", cam: "It supports 4K high-definition recording.", watch: "You can use the digital pen to take notes.", robot: "It has two cleaning modes: normal and intensive.", chi: "它具有非常專業的規格。" },
-                { eng: "It is very powerful and easy to use.", chi: "它的功能強大且易於使用。" }
+                { 
+                    "Ionic Hairdryer": { eng: "This hairdryer can keep your hair straight and soft.", chi: "這款風筒可以讓你的頭髮保持直順且柔軟。" },
+                    "4K Action Camera": { eng: "This camera has two built-in cameras and supports 4K recording.", chi: "這款相機內置兩個鏡頭並支持 4K 錄影。" },
+                    "Smart Watch": { eng: "This watch features a high-speed heart rate sensor and a timer.", chi: "這款手錶具備高速心率感測器和計時功能。" },
+                    "Cleaning Robot": { eng: "This floor cleaning robot is both a vacuum and a mop.", chi: "這款拖地機械人同時具備吸塵和拖地功能。" }
+                },
+                { eng: "It is extremely powerful and lightweight.", chi: "它功能強大且非常輕巧。" }
             ]
         },
         {
-            title: "HOW TO USE",
+            name: "How to Use / 如何使用",
             phrases: [
-                { eng: "It's easy to use. Simply press 'up' or 'down' on the remote control.", chi: "使用很簡單，只需按遙控器上的「上」或「下」。" },
-                { eng: "Just press 'set' for three seconds to select the mode.", chi: "只需按住「set」鍵三秒鐘即可選擇模式。" },
-                { eng: "Turn the red knob to select your desired speed.", chi: "轉動紅色旋鈕來選擇你需要的速度。" }
+                { 
+                    "Ionic Hairdryer": { eng: "Simply touch 'set' on the touch screen to select your speed.", chi: "只需輕觸屏幕上的 'set' 鍵即可選擇風速。" },
+                    "4K Action Camera": { eng: "Simply press 'up' or 'down' on the remote to select your mode.", chi: "只需按下遙控器上的上下鍵即可選擇模式。" },
+                    "Smart Watch": { eng: "Simply swipe left on the screen to check your daily steps.", chi: "只需在屏幕向左滑動即可檢查日常步數。" },
+                    "Cleaning Robot": { eng: "Just turn the red knob to select the cleaning mode you need.", chi: "只需轉動紅色旋鈕即可選擇所需的清潔模式。" }
+                }
             ]
         },
         {
-            title: "GIVE A REVIEW",
+            name: "Review & Call to Action / 評測與行動呼籲",
             phrases: [
                 { eng: "I think this product is worth every penny.", chi: "我覺得這款產品物有所值。" },
-                { eng: "If you wonder my opinion, I would say it's amazing.", chi: "如果你想知道我的想法，我會說它很棒。" },
-                { eng: "To me, the battery life is the most impressive part.", chi: "對我來說，續航力是最令人印象深刻的部分。" }
+                { eng: "Enter my promo code to get a 20% discount.", chi: "輸入我的優惠碼即可獲得八折優惠。" },
+                { eng: "Click the link in the description below!", chi: "點擊下方資訊欄的連結吧！" }
             ]
         },
         {
-            title: "CALL TO ACTION",
-            phrases: [
-                { eng: "Enter my promo code to get a discount.", chi: "輸入我的優惠碼即可獲得折扣。" },
-                { eng: "Click the link below and enter my promo code.", chi: "點擊下方連結並輸入我的優惠碼。" }
-            ]
-        },
-        {
-            title: "CLOSING",
-            phrases: [
-                { eng: "Thanks for watching guys. Give it a like and subscribe!", chi: "謝謝收看，請點讚並訂閱我的頻道！" },
-                { eng: "Take care, have a great week, and I'll see you very soon.", chi: "保重，祝你有愉快的一週，我們很快再見。" }
-            ]
+            name: "Final Challenge: Full Script / 終極挑戰：完整講稿",
+            isFinal: true
         }
     ];
 
     function startApp(prod, emoji) {
         currentProd = prod;
         prodEmoji = emoji;
-        currentSectionIdx = 0;
+        sectionIdx = 0;
+        document.getElementById('header-prod').innerText = `${prodEmoji} ${prod}`;
         document.getElementById('page-welcome').classList.remove('active');
         document.getElementById('page-practice').classList.add('active');
-        renderSection();
+        render();
     }
 
-    function goHome() {
-        document.getElementById('page-practice').classList.remove('active');
-        document.getElementById('page-welcome').classList.add('active');
-    }
-
-    function renderSection() {
-        const section = rawData[currentSectionIdx];
-        document.getElementById('stage-info').innerText = `STEP ${currentSectionIdx + 1}/6: ${section.title}`;
+    function render() {
+        const section = sections[sectionIdx];
+        document.getElementById('section-info').innerText = `STEP ${sectionIdx + 1}/5: ${section.name}`;
         const container = document.getElementById('card-container');
         container.innerHTML = "";
 
-        section.phrases.forEach((p, i) => {
-            let engText = p.eng || "";
-            // 處理動態產品名
-            engText = engText.replace("[PROD]", currentProd);
-            // 處理特定產品 Features
-            if (currentSectionIdx === 1) { // Features section
-                if (currentProd.includes("Hair")) engText = p.hair || engText;
-                if (currentProd.includes("Camera")) engText = p.cam || engText;
-                if (currentProd.includes("Watch")) engText = p.watch || engText;
-                if (currentProd.includes("Robot")) engText = p.robot || engText;
-            }
+        if (section.isFinal) {
+            renderFinalChallenge();
+            return;
+        }
 
+        section.phrases.forEach(p => {
+            let data = p[currentProd] ? p[currentProd] : p;
+            let text = data.eng.replace("[PROD]", currentProd);
+            
             const card = document.createElement('div');
             card.className = "card";
             card.innerHTML = `
-                <div class="eng">${engText}</div>
-                <div class="chi">${p.chi}</div>
+                <div class="eng">${text}</div>
+                <div class="chi">${data.chi}</div>
                 <div class="btn-group">
-                    <button class="btn btn-listen" onclick="playAudio('${engText.replace(/'/g, "\\'")}')">🔊 Listen</button>
-                    <button class="btn btn-mic" onclick="handleRecord('${engText.replace(/'/g, "\\'")}', this)">🎤 Record</button>
+                    <button class="btn btn-listen" onclick="speak('${text.replace(/'/g, "\\'")}')">🔊 Listen / 聽</button>
+                    <button class="btn btn-mic" onclick="handleRecord('${text.replace(/'/g, "\\'")}', this)">🎤 Record / 讀</button>
                 </div>
             `;
             container.appendChild(card);
         });
 
-        document.getElementById('btn-prev').disabled = currentSectionIdx === 0;
-        document.getElementById('btn-next').innerText = currentSectionIdx === 5 ? "Finish" : "Next Part";
+        document.getElementById('btn-prev').disabled = sectionIdx === 0;
+        document.getElementById('btn-next').innerText = "Next / 下一頁";
+    }
+
+    function renderFinalChallenge() {
+        const container = document.getElementById('card-container');
+        const fullScript = `Welcome back to my channel. Today, I'm going to review the new ${currentProd}. It is very powerful and lightweight. Simply follow the instructions to use it. I think this product is worth every penny. Enter my promo code to get a discount. Thanks for watching!`;
+        
+        container.innerHTML = `
+            <div class="card" style="border: 2px solid var(--primary);">
+                <div style="color:var(--primary); font-weight:bold; margin-bottom:10px;">🌟 FINAL CHALLENGE: Read the whole script!</div>
+                <div class="eng" style="font-size:1.2rem; background:#f9f9f9; padding:15px; border-radius:10px;">${fullScript}</div>
+                <div class="chi" style="margin-top:10px;">試著一口氣讀出整段講稿，展現你的 Influencer 實力！</div>
+                <div class="btn-group">
+                    <button class="btn btn-listen" onclick="speak('${fullScript.replace(/'/g, "\\'")}')">🔊 Listen Full</button>
+                    <button class="btn btn-mic" onclick="handleRecord('${fullScript.replace(/'/g, "\\'")}', this)">🎤 Record Full Script</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('btn-next').innerText = "Finish / 完成";
     }
 
     function moveSection(step) {
-        currentSectionIdx += step;
-        if (currentSectionIdx >= 6) {
-            showPop("🏆 Script Finished!", "🌟", "You have practiced the full influencer script for " + currentProd + "!");
-            currentSectionIdx = 0;
+        sectionIdx += step;
+        if (sectionIdx >= sections.length) {
+            showPop("Congratulations! 🏆", "🎉", "You have mastered the " + currentProd + " product review!");
             goHome();
         } else {
-            renderSection();
+            render();
             window.scrollTo(0,0);
         }
     }
 
-    function playAudio(t) {
+    function speak(t) {
         const m = new SpeechSynthesisUtterance(t);
-        m.lang = 'en-US'; m.rate = 0.9;
+        m.lang = 'en-US'; m.rate = 0.85;
         window.speechSynthesis.speak(m);
     }
 
@@ -226,22 +230,19 @@
     recognition.lang = 'en-US';
 
     function handleRecord(target, btn) {
-        btn.innerText = "Listening...";
+        btn.innerText = "Listening... 👂";
         btn.classList.add('recording');
         recognition.start();
 
         recognition.onresult = (e) => {
             const result = e.results[0][0].transcript.toLowerCase();
-            const cleanTarget = target.toLowerCase().replace(/[.,!?'" ]/g, "");
-            const cleanResult = result.replace(/[.,!?'" ]/g, "");
-            
-            btn.innerText = "🎤 Record";
+            btn.innerText = "🎤 Record / 讀";
             btn.classList.remove('recording');
 
-            if (cleanResult.includes(cleanTarget) || cleanTarget.includes(cleanResult)) {
-                showPop("Excellent! 🎉", "🌟", `You said: "${result}"\nPerfect pronunciation!`);
+            if (result.length > 5) {
+                showPop("Good Job! 👍", "⭐", `You said: "${result}"`);
             } else {
-                showPop("Try Again!", "💪", `You said: "${result}"\nTip: Listen to the audio and try again.`);
+                showPop("Try Again!", "💪", "Try to speak louder and clearer.");
             }
         };
     }
@@ -257,6 +258,11 @@
     function closePop() {
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('popup').style.display = 'none';
+    }
+
+    function goHome() {
+        document.getElementById('page-practice').classList.remove('active');
+        document.getElementById('page-welcome').classList.add('active');
     }
 </script>
 
